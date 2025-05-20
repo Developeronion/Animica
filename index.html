@@ -4,29 +4,168 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Animica Hindi</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #fff;
+      color: #333;
+    }
+    header {
+      background-color: #f36f21;
+      padding: 15px 30px;
+      color: white;
+      font-weight: bold;
+      font-size: 24px;
+      letter-spacing: 1px;
+    }
+    main {
+      display: flex;
+      min-height: calc(100vh - 60px);
+    }
+    nav {
+      width: 250px;
+      background-color: #fff3e6;
+      border-right: 1px solid #f36f21;
+      overflow-y: auto;
+    }
+    nav h2 {
+      margin: 20px;
+      color: #f36f21;
+    }
+    nav ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    nav li {
+      padding: 12px 20px;
+      cursor: pointer;
+      border-bottom: 1px solid #f36f21;
+      transition: background-color 0.3s;
+    }
+    nav li:hover, nav li.active {
+      background-color: #f36f21;
+      color: white;
+    }
+    section#episodes {
+      flex-grow: 1;
+      padding: 20px 30px;
+      overflow-y: auto;
+      background-size: contain;
+      background-position: center top;
+      background-repeat: repeat-y;
+      background-color: #000;
+      color: white;
+      text-shadow: 1px 1px 3px #000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    section#episodes h2 {
+      color: #fff;
+      margin-bottom: 10px;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 8px 16px;
+      border-radius: 8px;
+    }
+    .episode-list {
+      margin-top: 10px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 15px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 600px;
+    }
+    .episode {
+      margin-bottom: 12px;
+    }
+    .episode a {
+      color: #ffcc99;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .episode a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      text-align: center;
+      padding: 10px;
+      background: #f36f21;
+      color: white;
+      font-size: 14px;
+    }
+  </style>
 </head>
 <body>
   <header>Animica Hindi</header>
   <main>
     <nav>
-      <label for="searchInput">Search Anime</label>
-      <input type="text" id="searchInput" placeholder="Type to search..." />
-
-      <label for="genreSelect">Filter by Genre</label>
-      <select id="genreSelect" multiple></select>
-
       <h2>Anime List</h2>
-      <ul id="animeList"></ul>
+      <ul id="animeList">
+        <li class="active" data-id="1">Ameku M.D. Doctor Detective S01 720p</li>
+        <li data-id="2">Sword Art Online Season 1</li>
+      </ul>
     </nav>
     <section id="episodes">
-      <h2>Select an anime to view episodes</h2>
-      <div class="episode-list" id="episodeList"></div>
+      <h2>Ameku M.D. Doctor Detective S01 720p Episodes</h2>
+      <div class="episode-list" id="episodeList">
+        <!-- Episodes inserted by JS -->
+      </div>
     </section>
   </main>
   <footer>© 2025 Animica Hindi</footer>
 
-  <script src="animeData.js"></script>
-  <script src="script.js"></script>
+  <script>
+    const animeList = [
+      {
+        id: 1,
+        title: "Ameku M.D. Doctor Detective S01 720p",
+        backgroundImage: "Ameku M.D. Doctor Detective.jpg",
+        episodes: Array.from({ length: 12 }, (_, i) => ({
+          ep: i + 1,
+          link: `https://cuty.io/AMDDDS01E${String(i + 1).padStart(2, '0')}`
+        }))
+      },
+      {
+        id: 2,
+        title: "Sword Art Online Season 1",
+        backgroundImage: "Sword Art Online.jpg",
+        episodes: Array.from({ length: 12 }, (_, i) => ({
+          ep: i + 1,
+          link: `https://cuty.io/SWORDAOS1E${String(i + 1).padStart(2, '0')}`
+        }))
+      }
+    ];
+
+    const episodeListDiv = document.getElementById("episodeList");
+    const episodeSection = document.getElementById("episodes");
+    const animeListItems = document.querySelectorAll("#animeList li");
+    const episodeHeader = episodeSection.querySelector("h2");
+
+    function renderEpisodes(anime) {
+      episodeSection.style.backgroundImage = `url('${anime.backgroundImage}')`;
+      episodeHeader.textContent = `${anime.title} Episodes`;
+      episodeListDiv.innerHTML = "";
+      anime.episodes.forEach(ep => {
+        const epDiv = document.createElement("div");
+        epDiv.classList.add("episode");
+        epDiv.innerHTML = `<a href="${ep.link}" target="_blank" download>Episode ${ep.ep} Download</a>`;
+        episodeListDiv.appendChild(epDiv);
+      });
+    }
+
+    animeListItems.forEach(item => {
+      item.addEventListener("click", () => {
+        animeListItems.forEach(li => li.classList.remove("active"));
+        item.classList.add("active");
+
+        const selectedId = Number(item.dataset.id);
+        const selectedAnime = animeList.find(a => a.id === selectedId);
+        renderEpisodes(selectedAnime);
+      });
+    });
+
+    renderEpisodes(animeList[0]);
+  </script>
 </body>
 </html>

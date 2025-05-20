@@ -24,19 +24,20 @@
       min-height: calc(100vh - 100px); /* Adjusted for typical header+footer */
     }
     nav {
-      width: 280px; /* Slightly wider for potentially longer titles */
+      width: 280px; /* Slightly wider for potentially longer titles and filters */
       background-color: #fff3e6;
       border-right: 1px solid #f36f21;
       overflow-y: auto;
       flex-shrink: 0; /* Prevent nav from shrinking */
     }
     nav h2 {
-      margin: 20px;
+      margin: 20px 20px 10px 20px; /* Adjusted margin */
       color: #f36f21;
     }
     nav ul {
       list-style: none;
       padding-left: 0;
+      margin-top: 10px; /* Added margin top */
     }
     nav li {
       padding: 12px 20px;
@@ -56,9 +57,9 @@
       flex-grow: 1;
       padding: 20px 30px;
       overflow-y: auto;
-      background-size: contain; /* 'contain' ensures the whole image is visible */
+      background-size: contain;
       background-position: center top;
-      background-repeat: no-repeat; /* Important for single background images */
+      background-repeat: no-repeat;
       background-color: #000;
       color: white;
       text-shadow: 1px 1px 3px #000;
@@ -66,10 +67,10 @@
       flex-direction: column;
       align-items: center;
     }
-    section#episodes h2 {
+    section#episodes h2 { /* Title of the Anime */
       color: #fff;
-      margin-bottom: 5px; /* Reduced margin */
-      background: rgba(0, 0, 0, 0.65);
+      margin-bottom: 5px;
+      background: rgba(0, 0, 0, 0.55); /* Adjusted transparency */
       padding: 10px 20px;
       border-radius: 8px;
       text-align: center;
@@ -78,24 +79,24 @@
         font-size: 0.9em;
         color: #ddd;
         margin-bottom: 15px;
-        background: rgba(0,0,0,0.55);
+        background: rgba(0,0,0,0.45); /* Adjusted transparency */
         padding: 6px 12px;
         border-radius: 5px;
         text-align: center;
     }
     .episode-list {
       margin-top: 10px;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.5); /* Adjusted transparency */
       padding: 20px;
       border-radius: 12px;
       width: 100%;
-      max-width: 650px; /* Slightly wider */
+      max-width: 650px;
       box-sizing: border-box;
     }
     .episode {
       margin-bottom: 12px;
       padding: 8px 0;
-      border-bottom: 1px solid #444; /* Separator for episodes */
+      border-bottom: 1px solid #444;
     }
     .episode:last-child {
         border-bottom: none;
@@ -104,7 +105,7 @@
       color: #ffcc99;
       text-decoration: none;
       font-weight: 600;
-      display: block; /* Make link take full width */
+      display: block;
       padding: 5px;
       transition: background-color 0.2s;
       border-radius: 4px;
@@ -121,6 +122,32 @@
         padding: 15px;
         border-radius: 8px;
     }
+    #searchInput {
+        width: calc(100% - 12px); /* Adjusted for padding */
+        padding: 8px 5px;
+        border: 1px solid #f36f21;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    #genreFilterContainer {
+        padding: 0 20px 10px 20px;
+    }
+    #genreFilterContainer h4 {
+        margin-top:15px;
+        margin-bottom: 8px;
+        color: #f36f21;
+    }
+    #genreFilterContainer div { /* Genre checkbox div */
+        margin-bottom: 6px;
+    }
+    #genreFilterContainer label {
+        font-size: 0.9em;
+        cursor: pointer;
+    }
+    #genreFilterContainer input[type="checkbox"] {
+        margin-right: 6px;
+        vertical-align: middle;
+    }
     footer {
       text-align: center;
       padding: 10px;
@@ -135,6 +162,16 @@
   <main>
     <nav>
       <h2>Anime List</h2>
+
+      <div style="padding: 0 20px 10px 20px;">
+        <input type="text" id="searchInput" placeholder="Search anime...">
+      </div>
+
+      <div id="genreFilterContainer">
+        <h4>Filter by Genre:</h4>
+        <!-- Genre checkboxes will be inserted here by JS -->
+      </div>
+
       <ul id="animeListNav">
         <!-- Anime list items will be inserted by JS -->
       </ul>
@@ -159,8 +196,11 @@
     const animeGenresDiv = document.getElementById("animeGenres");
     const loadingMessageDiv = document.getElementById("loadingMessage");
     const errorMessageDiv = document.getElementById("errorMessage");
+    const searchInput = document.getElementById("searchInput");
+    const genreFilterContainer = document.getElementById("genreFilterContainer");
 
-    let allAnimeData = []; // To store fetched anime data
+    let allAnimeData = [];
+    let uniqueGenres = new Set();
 
     function showLoading(message = "Loading...") {
         animeTitleHeader.textContent = message;
@@ -191,10 +231,9 @@
 
       // --- IMPORTANT: IMAGE PATH ---
       // If your images are in a subfolder like "images/", change the next line to:
-      // episodeSection.style.backgroundImage = `url('images/${anime.imageName}')`;
+      // episodeSection.style.backgroundImage = `url('images/${encodeURIComponent(anime.imageName)}')`;
       // Otherwise, if images are in the same directory as index.html, this is correct:
       episodeSection.style.backgroundImage = `url('${encodeURIComponent(anime.imageName)}')`;
-      // Using encodeURIComponent for image names with spaces or special characters.
 
       animeTitleHeader.textContent = `${anime.title} Episodes`;
       
@@ -205,7 +244,7 @@
         animeGenresDiv.style.display = 'none';
       }
 
-      episodeListDiv.innerHTML = ""; // Clear previous episodes
+      episodeListDiv.innerHTML = "";
       if (anime.episodes && anime.episodes.length > 0) {
         anime.episodes.forEach(ep => {
           const epDiv = document.createElement("div");
@@ -218,18 +257,30 @@
       }
     }
 
-    function populateAnimeNav(animeData) {
-      animeListNavUl.innerHTML = ""; // Clear existing list items
-      animeData.forEach((anime, index) => {
+    function populateAnimeNav(animeDataToDisplay) {
+      animeListNavUl.innerHTML = "";
+
+      if (animeDataToDisplay.length === 0) {
+        animeListNavUl.innerHTML = "<li style='padding: 12px 20px; color: #777; border-bottom: none;'>No anime found.</li>";
+        animeTitleHeader.textContent = "No Matches";
+        animeGenresDiv.style.display = 'none';
+        episodeSection.style.backgroundImage = 'none';
+        episodeListDiv.innerHTML = "";
+        loadingMessageDiv.style.display = 'none';
+        errorMessageDiv.style.display = 'none';
+        return;
+      }
+
+      animeDataToDisplay.forEach((anime) => {
         const listItem = document.createElement("li");
         listItem.textContent = anime.title;
-        listItem.dataset.id = anime.id; // Use the ID from JSON
-        
+        listItem.dataset.id = anime.id;
+
         listItem.addEventListener("click", () => {
           document.querySelectorAll("#animeListNav li").forEach(li => li.classList.remove("active"));
           listItem.classList.add("active");
 
-          const selectedId = parseInt(listItem.dataset.id); // Ensure ID is a number
+          const selectedId = parseInt(listItem.dataset.id);
           const selectedAnime = allAnimeData.find(a => a.id === selectedId);
           if (selectedAnime) {
             renderEpisodes(selectedAnime);
@@ -237,13 +288,74 @@
             showError(`Could not find anime with ID: ${selectedId}`);
           }
         });
-
         animeListNavUl.appendChild(listItem);
-
-        if (index === 0) {
-          listItem.classList.add("active"); // Make the first anime active by default
-        }
       });
+
+      if (animeListNavUl.firstChild && animeListNavUl.firstChild.tagName === 'LI') {
+        const firstItem = animeListNavUl.firstChild;
+        firstItem.classList.add("active");
+        const firstItemId = parseInt(firstItem.dataset.id);
+        const firstAnime = allAnimeData.find(a => a.id === firstItemId);
+        if (firstAnime) {
+            renderEpisodes(firstAnime);
+        }
+      }
+    }
+
+    function createGenreFilters() {
+        const genreFilterHeader = genreFilterContainer.querySelector('h4');
+        genreFilterContainer.innerHTML = ''; // Clear only checkboxes, keep header if needed or re-add
+        if (genreFilterHeader) genreFilterContainer.appendChild(genreFilterHeader); // Re-append header
+
+        if (uniqueGenres.size === 0) {
+            const noGenresMsg = document.createElement('p');
+            noGenresMsg.textContent = "No genres available for filtering.";
+            noGenresMsg.style.fontSize = "0.8em";
+            noGenresMsg.style.color = "#777";
+            genreFilterContainer.appendChild(noGenresMsg);
+            return;
+        }
+
+        const sortedGenres = Array.from(uniqueGenres).sort();
+
+        sortedGenres.forEach(genre => {
+            const checkboxDiv = document.createElement('div');
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = `genre-${genre.replace(/\s+/g, '-').toLowerCase()}`;
+            checkbox.value = genre;
+            checkbox.classList.add('genre-checkbox');
+
+            const label = document.createElement('label');
+            label.htmlFor = checkbox.id;
+            label.textContent = genre;
+
+            checkbox.addEventListener('change', applyFilters);
+
+            checkboxDiv.appendChild(checkbox);
+            checkboxDiv.appendChild(label);
+            genreFilterContainer.appendChild(checkboxDiv);
+        });
+    }
+
+    function applyFilters() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        const selectedGenreCheckboxes = document.querySelectorAll('.genre-checkbox:checked');
+        const selectedGenres = Array.from(selectedGenreCheckboxes).map(cb => cb.value);
+
+        let filteredAnime = allAnimeData.filter(anime => {
+            const titleMatch = anime.title.toLowerCase().includes(searchTerm);
+            const nameMatch = anime.name.toLowerCase().includes(searchTerm);
+            
+            let genreMatch = true;
+            if (selectedGenres.length > 0) {
+                genreMatch = selectedGenres.every(sg => anime.genres && anime.genres.includes(sg));
+            }
+            
+            return (titleMatch || nameMatch) && genreMatch;
+        });
+        populateAnimeNav(filteredAnime);
     }
 
     async function fetchAnimeData() {
@@ -254,19 +366,28 @@
           throw new Error(`HTTP error! Status: ${response.status} - ${response.statusText}. Failed to fetch anime-data.json.`);
         }
         allAnimeData = await response.json();
-        
+
         if (allAnimeData && allAnimeData.length > 0) {
+          allAnimeData.forEach(anime => {
+            if (anime.genres && Array.isArray(anime.genres)) {
+              anime.genres.forEach(genre => uniqueGenres.add(genre));
+            }
+          });
+
+          createGenreFilters();
           populateAnimeNav(allAnimeData);
-          renderEpisodes(allAnimeData[0]); // Render the first anime by default
+
         } else {
           showError("No anime data found in anime-data.json or the file is empty.");
+          createGenreFilters(); // Still create (empty) genre filters section
         }
       } catch (error) {
         showError(`Could not fetch or parse anime data: ${error.message}. Check if anime-data.json exists and is valid.`);
+        createGenreFilters(); // Attempt to create genre filters even on error (will show "no genres")
       }
     }
 
-    // Initial load
+    searchInput.addEventListener('input', applyFilters);
     document.addEventListener('DOMContentLoaded', fetchAnimeData);
   </script>
 </body>

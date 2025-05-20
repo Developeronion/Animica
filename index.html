@@ -100,6 +100,7 @@
   const animeData = {
     id: 1,
     title: "Ameku M.D. Doctor Detective S01 720p",
+    backgroundImage: "Ameku M.D. Doctor Detective.jpg", // local image in same repo/folder
     episodes: Array.from({ length: 12 }, (_, i) => {
       const epNum = String(i + 1).padStart(2, '0');
       return {
@@ -110,8 +111,13 @@
   };
 
   const episodeListDiv = document.getElementById("episodeList");
+  const episodeSection = document.getElementById("episodes");
 
   function renderEpisodes() {
+    // Set background image from local repo file
+    episodeSection.style.backgroundImage = `url('${animeData.backgroundImage}')`;
+
+    // Render episode links
     episodeListDiv.innerHTML = "";
     animeData.episodes.forEach(ep => {
       const epDiv = document.createElement("div");
@@ -124,5 +130,6 @@
   renderEpisodes();
   document.querySelector("#animeList li").addEventListener("click", renderEpisodes);
 </script>
+
 </body>
 </html>

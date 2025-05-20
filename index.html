@@ -21,7 +21,6 @@
     }
     main {
       display: flex;
-      height: calc(100vh - 60px);
     }
     nav {
       width: 250px;
@@ -123,10 +122,7 @@
     const episodeSection = document.getElementById("episodes");
 
     function renderEpisodes() {
-      // Set background image from local repo file
       episodeSection.style.backgroundImage = `url('${animeData.backgroundImage}')`;
-
-      // Render episode links
       episodeListDiv.innerHTML = "";
       animeData.episodes.forEach(ep => {
         const epDiv = document.createElement("div");

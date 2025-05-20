@@ -1,0 +1,62 @@
+body {
+  display: flex;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+aside {
+  width: 25%;
+  padding: 1rem;
+  background-color: #f0f0f0;
+  box-sizing: border-box;
+}
+
+section#episodes {
+  width: 75%;
+  padding: 1rem;
+  background-size: cover;
+  background-position: center;
+  box-sizing: border-box;
+  color: #fff;
+  text-shadow: 1px 1px 2px #000;
+}
+
+#genreFilter {
+  width: 100%;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+#seasonFilter, #searchInput {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+}
+
+#animeList {
+  list-style: none;
+  padding: 0;
+}
+
+#animeList li {
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+#animeList li.active {
+  background-color: #ccc;
+}
+
+#episodeList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.episode {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 1rem;
+  border-radius: 5px;
+}

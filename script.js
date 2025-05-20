@@ -1,90 +1,132 @@
-let animeData = [];
+<script>
+  const animeListData = [
+    {
+      id: 1,
+      title: "Ameku M.D. Doctor Detective S01 720p",
+      genres: ["Detective", "Drama"],
+      backgroundImage: "ameku_md_doctor_detective.jpg",
+      episodes: Array.from({ length: 12 }, (_, i) => ({
+        ep: i + 1,
+        link: `https://cuty.io/AMDDDS01E${String(i + 1).padStart(2, '0')}`
+      }))
+    },
+    {
+      id: 2,
+      title: "Sword Art Online Season 1",
+      genres: ["Action", "Adventure", "Fantasy"],
+      backgroundImage: "sword_art_online.jpg",
+      episodes: Array.from({ length: 12 }, (_, i) => ({
+        ep: i + 1,
+        link: `https://cuty.io/SWORDAOS1E${String(i + 1).padStart(2, '0')}`
+      }))
+    },
+    {
+      id: 3,
+      title: "A Condition Called Love Season 1",
+      genres: ["Romance", "School"],
+      backgroundImage: "a_condition_called_love_s1.jpg",
+      episodes: Array.from({ length: 12 }, (_, i) => ({
+        ep: i + 1,
+        link: `https://cuty.io/ACCLS1E${i + 1}`
+      }))
+    }
+  ];
 
-document.addEventListener("DOMContentLoaded", () => {
-  fetch("animeData.json")
-    .then((response) => response.json())
-    .then((data) => {
-      animeData = data;
-      populateFilters();
-      renderAnimeList(animeData);
+  const searchInput = document.getElementById("searchInput");
+  const genreSelect = document.getElementById("genreSelect");
+  const animeListEl = document.getElementById("animeList");
+  const episodeListDiv = document.getElementById("episodeList");
+  const episodeSection = document.getElementById("episodes");
+  const episodeHeader = episodeSection.querySelector("h2");
+
+  let filteredAnime = [...animeListData];
+  let activeAnimeId = filteredAnime[0]?.id || null;
+
+  function getAllGenres() {
+    const genresSet = new Set();
+    animeListData.forEach(anime => {
+      anime.genres.forEach(g => genresSet.add(g));
+    });
+    return Array.from(genresSet).sort();
+  }
+
+  function populateGenres() {
+    const genres = getAllGenres();
+    genres.forEach(genre => {
+      const option = document.createElement("option");
+      option.value = genre;
+      option.textContent = genre;
+      genreSelect.appendChild(option);
+    });
+  }
+
+  function renderAnimeList() {
+    animeListEl.innerHTML = "";
+    if (filteredAnime.length === 0) {
+      const noRes = document.createElement("li");
+      noRes.textContent = "No anime found";
+      noRes.style.cursor = "default";
+      noRes.style.color = "#999";
+      animeListEl.appendChild(noRes);
+      return;
+    }
+    filteredAnime.forEach(anime => {
+      const li = document.createElement("li");
+      li.textContent = anime.title;
+      li.dataset.id = anime.id;
+      li.classList.toggle("active", anime.id === activeAnimeId);
+      li.addEventListener("click", () => {
+        activeAnimeId = anime.id;
+        renderEpisodes(anime);
+        renderAnimeList();
+      });
+      animeListEl.appendChild(li);
+    });
+  }
+
+  function renderEpisodes(anime) {
+    episodeSection.style.backgroundImage = `url('${anime.backgroundImage}')`;
+    episodeHeader.textContent = `${anime.title} Episodes`;
+    episodeListDiv.innerHTML = "";
+    anime.episodes.forEach(ep => {
+      const epDiv = document.createElement("div");
+      epDiv.classList.add("episode");
+      epDiv.innerHTML = `<a href="${ep.link}" target="_blank" download>Episode ${ep.ep} Download</a>`;
+      episodeListDiv.appendChild(epDiv);
+    });
+  }
+
+  function filterAnime() {
+    const searchText = searchInput.value.trim().toLowerCase();
+    const selectedGenres = Array.from(genreSelect.selectedOptions).map(opt => opt.value);
+
+    filteredAnime = animeListData.filter(anime => {
+      const matchesSearch = anime.title.toLowerCase().includes(searchText);
+      const matchesGenre = selectedGenres.length === 0 || selectedGenres.every(g => anime.genres.includes(g));
+      return matchesSearch && matchesGenre;
     });
 
-  document.getElementById("genreFilter").addEventListener("change", applyFilters);
-  document.getElementById("seasonFilter").addEventListener("change", applyFilters);
-  document.getElementById("searchInput").addEventListener("input", applyFilters);
-});
+    if (!filteredAnime.find(a => a.id === activeAnimeId)) {
+      activeAnimeId = filteredAnime[0]?.id || null;
+      if (activeAnimeId) {
+        const activeAnime = animeListData.find(a => a.id === activeAnimeId);
+        renderEpisodes(activeAnime);
+      } else {
+        episodeSection.style.backgroundImage = '';
+        episodeHeader.textContent = 'No anime selected';
+        episodeListDiv.innerHTML = '';
+      }
+    }
 
-function populateFilters() {
-  const genreSet = new Set();
-  const seasonSet = new Set();
-
-  animeData.forEach((anime) => {
-    anime.genres.forEach((genre) => genreSet.add(genre));
-    seasonSet.add(anime.season);
-  });
-
-  const genreFilter = document.getElementById("genreFilter");
-  genreSet.forEach((genre) => {
-    const option = document.createElement("option");
-    option.value = genre;
-    option.textContent = genre;
-    genreFilter.appendChild(option);
-  });
-
-  const seasonFilter = document.getElementById("seasonFilter");
-  seasonSet.forEach((season) => {
-    const option = document.createElement("option");
-    option.value = season;
-    option.textContent = season;
-    seasonFilter.appendChild(option);
-  });
-}
-
-function applyFilters() {
-  const selectedGenres = Array.from(document.getElementById("genreFilter").selectedOptions).map(o => o.value);
-  const selectedSeason = document.getElementById("seasonFilter").value;
-  const searchQuery = document.getElementById("searchInput").value.toLowerCase();
-
-  const filtered = animeData.filter(anime => {
-    const matchesGenres = selectedGenres.length === 0 || selectedGenres.every(g => anime.genres.includes(g));
-    const matchesSeason = selectedSeason === "all" || anime.season === selectedSeason;
-    const matchesSearch = anime.title.toLowerCase().includes(searchQuery);
-    return matchesGenres && matchesSeason && matchesSearch;
-  });
-
-  renderAnimeList(filtered);
-}
-
-function renderAnimeList(list) {
-  const container = document.getElementById("animeList");
-  container.innerHTML = "";
-
-  list.forEach(anime => {
-    const li = document.createElement("li");
-    li.textContent = anime.title;
-    li.dataset.id = anime.id;
-    li.onclick = () => {
-      document.querySelectorAll("#animeList li").forEach(el => el.classList.remove("active"));
-      li.classList.add("active");
-      renderEpisodes(anime);
-    };
-    container.appendChild(li);
-  });
-}
-
-function renderEpisodes(anime) {
-  const section = document.getElementById("episodes");
-  section.style.backgroundImage = `url('${anime.backgroundImage}')`;
-
-  section.querySelector("h2").textContent = `${anime.title} Episodes`;
-  const list = document.getElementById("episodeList");
-  list.innerHTML = "";
-
-  for (let i = 1; i <= anime.episodes; i++) {
-    const epNum = anime.pad ? String(i).padStart(2, "0") : i;
-    const div = document.createElement("div");
-    div.className = "episode";
-    div.innerHTML = `<a href="${anime.linkPrefix}${epNum}" target="_blank" download>Episode ${i}</a>`;
-    list.appendChild(div);
+    renderAnimeList();
   }
-}
+
+  // Init
+  populateGenres();
+  renderEpisodes(animeListData[0]);
+  renderAnimeList();
+
+  // Event Listeners
+  searchInput.addEventListener("input", filterAnime);
+  genreSelect.addEventListener("change", filterAnime);
+</script>

@@ -21,13 +21,14 @@
     }
     main {
       display: flex;
-      min-height: calc(100vh - 100px); /* Adjusted for header and footer */
+      min-height: calc(100vh - 100px); /* Adjusted for typical header+footer */
     }
     nav {
-      width: 250px;
+      width: 280px; /* Slightly wider for potentially longer titles */
       background-color: #fff3e6;
       border-right: 1px solid #f36f21;
       overflow-y: auto;
+      flex-shrink: 0; /* Prevent nav from shrinking */
     }
     nav h2 {
       margin: 20px;
@@ -41,19 +42,23 @@
       padding: 12px 20px;
       cursor: pointer;
       border-bottom: 1px solid #f36f21;
-      transition: background-color 0.3s;
+      transition: background-color 0.3s, color 0.3s;
+      font-size: 0.95em;
     }
     nav li:hover, nav li.active {
       background-color: #f36f21;
       color: white;
     }
+    nav li:last-child {
+        border-bottom: none; /* Remove border from last item */
+    }
     section#episodes {
       flex-grow: 1;
       padding: 20px 30px;
       overflow-y: auto;
-      background-size: contain; /* Or cover, depending on preference */
+      background-size: contain; /* 'contain' ensures the whole image is visible */
       background-position: center top;
-      background-repeat: no-repeat; /* Changed to no-repeat, adjust if needed */
+      background-repeat: no-repeat; /* Important for single background images */
       background-color: #000;
       color: white;
       text-shadow: 1px 1px 3px #000;
@@ -63,38 +68,58 @@
     }
     section#episodes h2 {
       color: #fff;
-      margin-bottom: 10px;
-      background: rgba(0, 0, 0, 0.6);
-      padding: 8px 16px;
+      margin-bottom: 5px; /* Reduced margin */
+      background: rgba(0, 0, 0, 0.65);
+      padding: 10px 20px;
       border-radius: 8px;
       text-align: center;
-    }
-    .episode-list {
-      margin-top: 10px;
-      background: rgba(0, 0, 0, 0.7); /* Slightly more opaque for readability */
-      padding: 15px;
-      border-radius: 12px;
-      width: 100%;
-      max-width: 600px;
-    }
-    .episode {
-      margin-bottom: 12px;
-    }
-    .episode a {
-      color: #ffcc99;
-      text-decoration: none;
-      font-weight: 600;
-    }
-    .episode a:hover {
-      text-decoration: underline;
     }
     .genres-display {
         font-size: 0.9em;
         color: #ddd;
         margin-bottom: 15px;
-        background: rgba(0,0,0,0.5);
-        padding: 5px 10px;
+        background: rgba(0,0,0,0.55);
+        padding: 6px 12px;
         border-radius: 5px;
+        text-align: center;
+    }
+    .episode-list {
+      margin-top: 10px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 650px; /* Slightly wider */
+      box-sizing: border-box;
+    }
+    .episode {
+      margin-bottom: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid #444; /* Separator for episodes */
+    }
+    .episode:last-child {
+        border-bottom: none;
+    }
+    .episode a {
+      color: #ffcc99;
+      text-decoration: none;
+      font-weight: 600;
+      display: block; /* Make link take full width */
+      padding: 5px;
+      transition: background-color 0.2s;
+      border-radius: 4px;
+    }
+    .episode a:hover {
+      text-decoration: none;
+      background-color: rgba(255, 204, 153, 0.2);
+      color: #ffdca8;
+    }
+    #loadingMessage, #errorMessage {
+        margin-top: 20px;
+        font-size: 1.2em;
+        background: rgba(0,0,0,0.7);
+        padding: 15px;
+        border-radius: 8px;
     }
     footer {
       text-align: center;
@@ -115,8 +140,10 @@
       </ul>
     </nav>
     <section id="episodes">
-      <h2 id="animeTitleHeader">Select an Anime</h2>
+      <h2 id="animeTitleHeader">Loading Anime...</h2>
       <div id="animeGenres" class="genres-display" style="display: none;"></div>
+      <div id="loadingMessage" style="display: none;">Loading episodes...</div>
+      <div id="errorMessage" style="display: none;"></div>
       <div class="episode-list" id="episodeListContainer">
         <!-- Episodes inserted by JS -->
       </div>
@@ -130,13 +157,45 @@
     const animeListNavUl = document.getElementById("animeListNav");
     const animeTitleHeader = document.getElementById("animeTitleHeader");
     const animeGenresDiv = document.getElementById("animeGenres");
+    const loadingMessageDiv = document.getElementById("loadingMessage");
+    const errorMessageDiv = document.getElementById("errorMessage");
 
     let allAnimeData = []; // To store fetched anime data
 
+    function showLoading(message = "Loading...") {
+        animeTitleHeader.textContent = message;
+        animeGenresDiv.style.display = 'none';
+        episodeListDiv.innerHTML = "";
+        loadingMessageDiv.textContent = message;
+        loadingMessageDiv.style.display = 'block';
+        errorMessageDiv.style.display = 'none';
+    }
+
+    function showError(message) {
+        animeTitleHeader.textContent = "Error";
+        animeGenresDiv.style.display = 'none';
+        episodeListDiv.innerHTML = "";
+        loadingMessageDiv.style.display = 'none';
+        errorMessageDiv.textContent = message;
+        errorMessageDiv.style.display = 'block';
+        console.error(message);
+    }
+
     function renderEpisodes(anime) {
-      // Assuming images are in the same directory or you provide a full path in imageName
-      // If images are in an 'images' subfolder, use: `url('images/${anime.imageName}')`
-      episodeSection.style.backgroundImage = `url('${anime.imageName}')`;
+      if (!anime) {
+        showError("Selected anime data not found.");
+        return;
+      }
+      loadingMessageDiv.style.display = 'none';
+      errorMessageDiv.style.display = 'none';
+
+      // --- IMPORTANT: IMAGE PATH ---
+      // If your images are in a subfolder like "images/", change the next line to:
+      // episodeSection.style.backgroundImage = `url('images/${anime.imageName}')`;
+      // Otherwise, if images are in the same directory as index.html, this is correct:
+      episodeSection.style.backgroundImage = `url('${encodeURIComponent(anime.imageName)}')`;
+      // Using encodeURIComponent for image names with spaces or special characters.
+
       animeTitleHeader.textContent = `${anime.title} Episodes`;
       
       if (anime.genres && anime.genres.length > 0) {
@@ -164,53 +223,51 @@
       animeData.forEach((anime, index) => {
         const listItem = document.createElement("li");
         listItem.textContent = anime.title;
-        listItem.dataset.id = anime.id;
+        listItem.dataset.id = anime.id; // Use the ID from JSON
         
         listItem.addEventListener("click", () => {
-          // Remove active class from all other items
           document.querySelectorAll("#animeListNav li").forEach(li => li.classList.remove("active"));
-          // Add active class to the clicked item
           listItem.classList.add("active");
 
-          const selectedAnime = allAnimeData.find(a => a.id === anime.id);
+          const selectedId = parseInt(listItem.dataset.id); // Ensure ID is a number
+          const selectedAnime = allAnimeData.find(a => a.id === selectedId);
           if (selectedAnime) {
             renderEpisodes(selectedAnime);
+          } else {
+            showError(`Could not find anime with ID: ${selectedId}`);
           }
         });
 
         animeListNavUl.appendChild(listItem);
 
-        // Make the first anime active by default
         if (index === 0) {
-          listItem.classList.add("active");
+          listItem.classList.add("active"); // Make the first anime active by default
         }
       });
     }
 
     async function fetchAnimeData() {
+      showLoading("Loading anime list...");
       try {
-        const response = await fetch('anime-data.json'); // Fetches the JSON file
+        const response = await fetch('anime-data.json');
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          throw new Error(`HTTP error! Status: ${response.status} - ${response.statusText}. Failed to fetch anime-data.json.`);
         }
         allAnimeData = await response.json();
         
-        if (allAnimeData.length > 0) {
+        if (allAnimeData && allAnimeData.length > 0) {
           populateAnimeNav(allAnimeData);
           renderEpisodes(allAnimeData[0]); // Render the first anime by default
         } else {
-          animeTitleHeader.textContent = "No Anime Data Found";
-          episodeListDiv.innerHTML = "<p>Could not load anime list.</p>";
+          showError("No anime data found in anime-data.json or the file is empty.");
         }
       } catch (error) {
-        console.error("Could not fetch anime data:", error);
-        animeTitleHeader.textContent = "Error Loading Anime";
-        episodeListDiv.innerHTML = `<p>Failed to load anime list. Please check console for errors. (${error.message})</p>`;
+        showError(`Could not fetch or parse anime data: ${error.message}. Check if anime-data.json exists and is valid.`);
       }
     }
 
     // Initial load
-    fetchAnimeData();
+    document.addEventListener('DOMContentLoaded', fetchAnimeData);
   </script>
 </body>
 </html>

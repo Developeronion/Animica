@@ -5,7 +5,7 @@
     "seasonName": "Season 1",
     "title": "Ameku M.D. Doctor Detective S01 720p",
     "genres": ["Mystery", "Medical", "Drama"],
-    "imageName": "Ameku M.D. Doctor Detective.jpg",
+    "imageName": "ameku-md-doctor-detective.jpg",
     "episodes": [
       {"ep": 1, "link": "https://cuty.io/AMDDDS01E01"},
       {"ep": 2, "link": "https://cuty.io/AMDDDS01E02"},
@@ -27,7 +27,7 @@
     "seasonName": "Season 1",
     "title": "Sword Art Online Season 1",
     "genres": ["Action", "Adventure", "Fantasy", "Game"],
-    "imageName": "Sword Art Online.jpg",
+    "imageName": "sword_art_online.jpg",
     "episodes": [
       {"ep": 1, "link": "https://cuty.io/SWORDAOS1E01"},
       {"ep": 2, "link": "https://cuty.io/SWORDAOS1E02"},

@@ -63,9 +63,18 @@
     "genres": ["Romance", "Slice of Life", "School"],
     "imageName": "a_condition_called_love_s1.jpg",
     "episodes": [
-      {"ep": 1, "link": "https://example.com/accl_s1_e01"},
-      {"ep": 2, "link": "https://example.com/accl_s1_e02"},
-      {"ep": 3, "link": "https://example.com/accl_s1_e03"}
+      {"ep": 1, "link": "https://cuty.io/ACCLS1E01"},
+      {"ep": 2, "link": "https://cuty.io/ACCLS1E02"},
+      {"ep": 3, "link": "https://cuty.io/ACCLS1E03"},
+      {"ep": 4, "link": "https://cuty.io/ACCLS1E04"},
+      {"ep": 5, "link": "https://cuty.io/ACCLS1E05"},
+      {"ep": 6, "link": "https://cuty.io/ACCLS1E06"},
+      {"ep": 7, "link": "https://cuty.io/ACCLS1E07"},
+      {"ep": 8, "link": "https://cuty.io/ACCLS1E08"},
+      {"ep": 9, "link": "https://cuty.io/ACCLS1E09"},
+      {"ep": 10, "link": "https://cuty.io/ACCLS1E10"},
+      {"ep": 11, "link": "https://cuty.io/ACCLS1E11"},
+      {"ep": 12, "link": "https://cuty.io/ACCLS1E12"}
     ]
   }
 ]

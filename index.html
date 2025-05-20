@@ -10,23 +10,25 @@
   <aside>
     <h2>Filters</h2>
     <label for="genreFilter">Genres:</label>
-    <select id="genreFilter" multiple size="5">
-      <!-- Options will be populated dynamically -->
-    </select>
+    <select id="genreFilter" multiple size="5"></select>
+
     <label for="seasonFilter">Season:</label>
     <select id="seasonFilter">
       <option value="all">All</option>
-      <!-- Options will be populated dynamically -->
     </select>
+
     <label for="searchInput">Search:</label>
     <input type="text" id="searchInput" placeholder="Search by title..." />
+
     <h2>Anime List</h2>
     <ul id="animeList"></ul>
   </aside>
+
   <section id="episodes">
     <h2>Select an anime to view episodes</h2>
     <div id="episodeList"></div>
   </section>
+
   <script src="script.js"></script>
 </body>
 </html>

@@ -41,55 +41,50 @@ function populateFilters() {
 }
 
 function applyFilters() {
-  const genreFilter = document.getElementById("genreFilter");
-  const selectedGenres = Array.from(genreFilter.selectedOptions).map((option) => option.value);
-
+  const selectedGenres = Array.from(document.getElementById("genreFilter").selectedOptions).map(o => o.value);
   const selectedSeason = document.getElementById("seasonFilter").value;
   const searchQuery = document.getElementById("searchInput").value.toLowerCase();
 
-  const filteredAnime = animeData.filter((anime) => {
-    const matchesGenres =
-      selectedGenres.length === 0 || selectedGenres.every((genre) => anime.genres.includes(genre));
+  const filtered = animeData.filter(anime => {
+    const matchesGenres = selectedGenres.length === 0 || selectedGenres.every(g => anime.genres.includes(g));
     const matchesSeason = selectedSeason === "all" || anime.season === selectedSeason;
     const matchesSearch = anime.title.toLowerCase().includes(searchQuery);
     return matchesGenres && matchesSeason && matchesSearch;
   });
 
-  renderAnimeList(filteredAnime);
+  renderAnimeList(filtered);
 }
 
-function renderAnimeList(animeList) {
-  const animeListElement = document.getElementById("animeList");
-  animeListElement.innerHTML = "";
+function renderAnimeList(list) {
+  const container = document.getElementById("animeList");
+  container.innerHTML = "";
 
-  animeList.forEach((anime) => {
+  list.forEach(anime => {
     const li = document.createElement("li");
     li.textContent = anime.title;
     li.dataset.id = anime.id;
-    li.addEventListener("click", () => {
-      document.querySelectorAll("#animeList li").forEach((item) => item.classList.remove("active"));
+    li.onclick = () => {
+      document.querySelectorAll("#animeList li").forEach(el => el.classList.remove("active"));
       li.classList.add("active");
       renderEpisodes(anime);
-    });
-    animeListElement.appendChild(li);
+    };
+    container.appendChild(li);
   });
 }
 
 function renderEpisodes(anime) {
-  const episodeSection = document.getElementById("episodes");
-  episodeSection.style.backgroundImage = `url('${anime.backgroundImage}')`;
+  const section = document.getElementById("episodes");
+  section.style.backgroundImage = `url('${anime.backgroundImage}')`;
 
-  const episodeHeader = episodeSection.querySelector("h2");
-  episodeHeader.textContent = `${anime.title} Episodes`;
-
-  const episodeListDiv = document.getElementById("episodeList");
-  episodeListDiv.innerHTML = "";
+  section.querySelector("h2").textContent = `${anime.title} Episodes`;
+  const list = document.getElementById("episodeList");
+  list.innerHTML = "";
 
   for (let i = 1; i <= anime.episodes; i++) {
-    const epNumber = anime.pad ? String(i).padStart(2, "0") : i;
-    const epDiv = document.createElement("div");
-    epDiv.classList.add("episode");
-    epDiv.innerHTML = `<a href="${anime.linkPrefix}${epNumber}" target="_blank" download>Episode ${i} Download</a>`;
-    episodeListDiv.appendChild(epDiv);
+    const epNum = anime.pad ? String(i).padStart(2, "0") : i;
+    const div = document.createElement("div");
+    div.className = "episode";
+    div.innerHTML = `<a href="${anime.linkPrefix}${epNum}" target="_blank" download>Episode ${i}</a>`;
+    list.appendChild(div);
   }
 }

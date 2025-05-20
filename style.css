@@ -127,9 +127,11 @@ p {
     flex-direction: column !important;
     gap: 20px;
   }
+
   .image-spin {
     width: 80%;
   }
+
   .text {
     text-align: center;
     max-width: 100%;

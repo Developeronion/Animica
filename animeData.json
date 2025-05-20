@@ -2,7 +2,7 @@
   {
     "id": 1,
     "title": "Ameku M.D. Doctor Detective S01 720p",
-    "backgroundImage": "images/Ameku M.D. Doctor Detective.jpg",
+    "backgroundImage": "images/ameku_md_doctor_detective.jpg",
     "episodes": 12,
     "linkPrefix": "https://cuty.io/AMDDDS01E",
     "pad": true,
@@ -12,7 +12,7 @@
   {
     "id": 2,
     "title": "Sword Art Online Season 1",
-    "backgroundImage": "images/Sword Art Online.jpg",
+    "backgroundImage": "images/sword_art_online.jpg",
     "episodes": 12,
     "linkPrefix": "https://cuty.io/SWORDAOS1E",
     "pad": true,
@@ -22,7 +22,7 @@
   {
     "id": 3,
     "title": "A Condition Called Love Season 1",
-    "backgroundImage": "images/A Condition Called Love Season 1.jpg",
+    "backgroundImage": "images/a_condition_called_love_s1.jpg",
     "episodes": 12,
     "linkPrefix": "https://cuty.io/ACCLS1E",
     "pad": false,

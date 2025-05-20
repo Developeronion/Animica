@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Anime Share - Crunchyroll Style</title>
+<title>Anime Share - Ameku M.D. Doctor Detective</title>
 <style>
   body {
     margin: 0;
@@ -84,92 +84,50 @@
   <nav>
     <h2>Anime List</h2>
     <ul id="animeList">
-      <!-- Anime items inserted here by JS -->
+      <li class="active" data-id="1">Ameku M.D. Doctor Detective S01 720p</li>
     </ul>
   </nav>
   <section id="episodes">
-    <h2>Select an Anime</h2>
-    <p>Episodes will appear here with download links.</p>
+    <h2>Ameku M.D. Doctor Detective S01 720p Episodes</h2>
+    <div class="episode-list" id="episodeList">
+      <!-- Episodes inserted by JS -->
+    </div>
   </section>
 </main>
 <footer>© 2025 Anime Share</footer>
 
 <script>
-  // Sample data: anime with episodes and download links
-  const animeData = [
-    {
-      id: 1,
-      title: "Naruto",
-      episodes: [
-        { ep: 1, link: "https://example.com/naruto/ep1.mp4" },
-        { ep: 2, link: "https://example.com/naruto/ep2.mp4" },
-        { ep: 3, link: "https://example.com/naruto/ep3.mp4" },
-      ],
-    },
-    {
-      id: 2,
-      title: "Attack on Titan",
-      episodes: [
-        { ep: 1, link: "https://example.com/aot/ep1.mp4" },
-        { ep: 2, link: "https://example.com/aot/ep2.mp4" },
-        { ep: 3, link: "https://example.com/aot/ep3.mp4" },
-        { ep: 4, link: "https://example.com/aot/ep4.mp4" },
-      ],
-    },
-    {
-      id: 3,
-      title: "My Hero Academia",
-      episodes: [
-        { ep: 1, link: "https://example.com/mha/ep1.mp4" },
-        { ep: 2, link: "https://example.com/mha/ep2.mp4" },
-      ],
-    },
-  ];
+  // Anime data for Ameku M.D.
+  const animeData = {
+    id: 1,
+    title: "Ameku M.D. Doctor Detective S01 720p",
+    episodes: [
+      { ep: 1, link: "https://example.com/ameku/ep1-720p.mp4" },
+      { ep: 2, link: "https://example.com/ameku/ep2-720p.mp4" },
+      { ep: 3, link: "https://example.com/ameku/ep3-720p.mp4" },
+      { ep: 4, link: "https://example.com/ameku/ep4-720p.mp4" },
+      { ep: 5, link: "https://example.com/ameku/ep5-720p.mp4" }
+    ]
+  };
 
-  const animeListEl = document.getElementById("animeList");
-  const episodesSection = document.getElementById("episodes");
+  const episodeListDiv = document.getElementById("episodeList");
 
-  // Populate anime list
-  function populateAnimeList() {
-    animeData.forEach((anime, idx) => {
-      const li = document.createElement("li");
-      li.textContent = anime.title;
-      li.dataset.id = anime.id;
-      if (idx === 0) li.classList.add("active"); // select first by default
-      li.addEventListener("click", () => selectAnime(anime.id, li));
-      animeListEl.appendChild(li);
-    });
-  }
-
-  // Handle anime selection
-  function selectAnime(id, clickedLi) {
-    // Update active state in nav
-    document.querySelectorAll("#animeList li").forEach(li => li.classList.remove("active"));
-    clickedLi.classList.add("active");
-
-    // Find selected anime
-    const anime = animeData.find(a => a.id == id);
-    if (!anime) return;
-
-    // Render episodes
-    episodesSection.innerHTML = `<h2>${anime.title} Episodes</h2>`;
-    const episodeListDiv = document.createElement("div");
-    episodeListDiv.classList.add("episode-list");
-
-    anime.episodes.forEach(ep => {
+  function renderEpisodes() {
+    episodeListDiv.innerHTML = "";
+    animeData.episodes.forEach(ep => {
       const epDiv = document.createElement("div");
       epDiv.classList.add("episode");
       epDiv.innerHTML = `<a href="${ep.link}" target="_blank" download>Episode ${ep.ep} Download</a>`;
       episodeListDiv.appendChild(epDiv);
     });
-
-    episodesSection.appendChild(episodeListDiv);
   }
 
-  // Initialize
-  populateAnimeList();
-  // Show first anime episodes by default
-  selectAnime(animeData[0].id, animeListEl.querySelector("li.active"));
+  renderEpisodes();
+
+  // Optional: If you want clicking the anime to reload episodes (only one here)
+  document.querySelector("#animeList li").addEventListener("click", () => {
+    renderEpisodes();
+  });
 </script>
 </body>
 </html>

@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "name": "Ameku M.D. Doctor Detective",
+    "seasonName": "Season 1",
+    "title": "Ameku M.D. Doctor Detective S01 720p",
+    "genres": ["Mystery", "Medical", "Drama"],
+    "imageName": "Ameku M.D. Doctor Detective.jpg",
+    "episodes": [
+      {"ep": 1, "link": "https://cuty.io/AMDDDS01E01"},
+      {"ep": 2, "link": "https://cuty.io/AMDDDS01E02"},
+      {"ep": 3, "link": "https://cuty.io/AMDDDS01E03"},
+      {"ep": 4, "link": "https://cuty.io/AMDDDS01E04"},
+      {"ep": 5, "link": "https://cuty.io/AMDDDS01E05"},
+      {"ep": 6, "link": "https://cuty.io/AMDDDS01E06"},
+      {"ep": 7, "link": "https://cuty.io/AMDDDS01E07"},
+      {"ep": 8, "link": "https://cuty.io/AMDDDS01E08"},
+      {"ep": 9, "link": "https://cuty.io/AMDDDS01E09"},
+      {"ep": 10, "link": "https://cuty.io/AMDDDS01E10"},
+      {"ep": 11, "link": "https://cuty.io/AMDDDS01E11"},
+      {"ep": 12, "link": "https://cuty.io/AMDDDS01E12"}
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Sword Art Online",
+    "seasonName": "Season 1",
+    "title": "Sword Art Online Season 1",
+    "genres": ["Action", "Adventure", "Fantasy", "Game"],
+    "imageName": "Sword Art Online.jpg",
+    "episodes": [
+      {"ep": 1, "link": "https://cuty.io/SWORDAOS1E01"},
+      {"ep": 2, "link": "https://cuty.io/SWORDAOS1E02"},
+      {"ep": 3, "link": "https://cuty.io/SWORDAOS1E03"},
+      {"ep": 4, "link": "https://cuty.io/SWORDAOS1E04"},
+      {"ep": 5, "link": "https://cuty.io/SWORDAOS1E05"},
+      {"ep": 6, "link": "https://cuty.io/SWORDAOS1E06"},
+      {"ep": 7, "link": "https://cuty.io/SWORDAOS1E07"},
+      {"ep": 8, "link": "https://cuty.io/SWORDAOS1E08"},
+      {"ep": 9, "link": "https://cuty.io/SWORDAOS1E09"},
+      {"ep": 10, "link": "https://cuty.io/SWORDAOS1E10"},
+      {"ep": 11, "link": "https://cuty.io/SWORDAOS1E11"},
+      {"ep": 12, "link": "https://cuty.io/SWORDAOS1E12"}
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Attack on Titan",
+    "seasonName": "The Final Season Part 2",
+    "title": "Attack on Titan: The Final Season Part 2 1080p",
+    "genres": ["Action", "Dark Fantasy", "Post-apocalyptic"],
+    "imageName": "attack_on_titan_final_s2.jpg",
+    "episodes": [
+      {"ep": 1, "link": "https://example.com/aot_fs_p2_e01"},
+      {"ep": 2, "link": "https://example.com/aot_fs_p2_e02"}
+    ]
+  }
+]

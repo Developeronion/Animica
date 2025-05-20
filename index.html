@@ -1,62 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to My Website!</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(to right, #e0eafc, #cfdef3);
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to My Anime World!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #fceabb, #f8b500);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      perspective: 1000px;
+      overflow: hidden;
+    }
 
-        h1 {
-            font-size: 3em;
-            color: #3366cc;
-        }
+    h1 {
+      font-family: 'Cherry Bomb One', cursive;
+      font-size: 3.5em;
+      color: #ff4d8f;
+      text-shadow: 2px 2px #fff, 4px 4px #ff90b3;
+      transform: rotateX(10deg);
+      margin-bottom: 10px;
+    }
 
-        p {
-            font-size: 1.2em;
-        }
+    p {
+      font-size: 1.3em;
+      transform: translateZ(20px);
+      margin-bottom: 20px;
+    }
 
-        .button {
-            margin-top: 20px;
-            background-color: #3366cc;
-            color: white;
-            padding: 12px 24px;
-            text-decoration: none;
-            border-radius: 8px;
-            transition: background 0.3s ease;
-        }
+    .button {
+      background-color: #ff4d8f;
+      color: white;
+      padding: 14px 28px;
+      text-decoration: none;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: inline-block;
+      font-weight: bold;
+    }
 
-        .button:hover {
-            background-color: #254b9b;
-        }
+    .button:hover {
+      transform: scale(1.05) rotateX(5deg);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+    }
 
-        footer {
-            margin-top: auto;
-            padding: 10px;
-            font-size: 0.9em;
-            color: #777;
-        }
-    </style>
+    footer {
+      margin-top: auto;
+      padding: 12px;
+      font-size: 0.9em;
+      color: #555;
+      text-shadow: 1px 1px #fff;
+    }
+  </style>
 </head>
 <body>
-    <h1>Welcome to My Website! Viewers</h1>
-    <p>This website is powered by Ubuntu and No-IP Dynamic DNS.</p>
-    <a href="#" class="button">Learn More</a>
+  <h1>Welcome to My Anime World!</h1>
+  <p>Enjoy your favorite anime — shared with love and kawaii vibes!</p>
+  <a href="#" class="button">Explore Now</a>
 
-    <footer>
-        &copy; 2025 MyWebsite. All rights reserved.
-    </footer>
+  <footer>
+    &copy; 2025 MyAnimeWorld. Powered by Ubuntu & No-IP Dynamic DNS.
+  </footer>
 </body>
 </html>

@@ -1,82 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Anime Share - Ameku M.D. Doctor Detective</title>
-<style>
-  body {
-    margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #fff;
-    color: #333;
-  }
-  header {
-    background-color: #f36f21;
-    padding: 15px 30px;
-    color: white;
-    font-weight: bold;
-    font-size: 24px;
-    letter-spacing: 1px;
-  }
-  main {
-    display: flex;
-    height: calc(100vh - 60px);
-  }
-  nav {
-    width: 250px;
-    background-color: #fff3e6;
-    border-right: 1px solid #f36f21;
-    overflow-y: auto;
-  }
-  nav h2 {
-    margin: 20px;
-    color: #f36f21;
-  }
-  nav ul {
-    list-style: none;
-    padding-left: 0;
-  }
-  nav li {
-    padding: 12px 20px;
-    cursor: pointer;
-    border-bottom: 1px solid #f36f21;
-    transition: background-color 0.3s;
-  }
-  nav li:hover, nav li.active {
-    background-color: #f36f21;
-    color: white;
-  }
-  section#episodes {
-    flex-grow: 1;
-    padding: 20px 30px;
-    overflow-y: auto;
-  }
-  section#episodes h2 {
-    color: #f36f21;
-  }
-  .episode-list {
-    margin-top: 15px;
-  }
-  .episode {
-    margin-bottom: 12px;
-  }
-  .episode a {
-    color: #f36f21;
-    text-decoration: none;
-    font-weight: 600;
-  }
-  .episode a:hover {
-    text-decoration: underline;
-  }
-  footer {
-    text-align: center;
-    padding: 10px;
-    background: #f36f21;
-    color: white;
-    font-size: 14px;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Anime Share - Ameku M.D. Doctor Detective</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #fff;
+      color: #333;
+    }
+    header {
+      background-color: #f36f21;
+      padding: 15px 30px;
+      color: white;
+      font-weight: bold;
+      font-size: 24px;
+      letter-spacing: 1px;
+    }
+    main {
+      display: flex;
+      height: calc(100vh - 60px);
+    }
+    nav {
+      width: 250px;
+      background-color: #fff3e6;
+      border-right: 1px solid #f36f21;
+      overflow-y: auto;
+    }
+    nav h2 {
+      margin: 20px;
+      color: #f36f21;
+    }
+    nav ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    nav li {
+      padding: 12px 20px;
+      cursor: pointer;
+      border-bottom: 1px solid #f36f21;
+      transition: background-color 0.3s;
+    }
+    nav li:hover, nav li.active {
+      background-color: #f36f21;
+      color: white;
+    }
+    section#episodes {
+      flex-grow: 1;
+      padding: 20px 30px;
+      overflow-y: auto;
+    }
+    section#episodes h2 {
+      color: #f36f21;
+    }
+    .episode-list {
+      margin-top: 15px;
+    }
+    .episode {
+      margin-bottom: 12px;
+    }
+    .episode a {
+      color: #f36f21;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .episode a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      text-align: center;
+      padding: 10px;
+      background: #f36f21;
+      color: white;
+      font-size: 14px;
+    }
+  </style>
 </head>
 <body>
 <header>Anime Share</header>
@@ -97,17 +97,16 @@
 <footer>© 2025 Anime Share</footer>
 
 <script>
-  // Anime data for Ameku M.D.
   const animeData = {
     id: 1,
     title: "Ameku M.D. Doctor Detective S01 720p",
-    episodes: [
-      { ep: 1, link: "https://example.com/ameku/ep1-720p.mp4" },
-      { ep: 2, link: "https://example.com/ameku/ep2-720p.mp4" },
-      { ep: 3, link: "https://example.com/ameku/ep3-720p.mp4" },
-      { ep: 4, link: "https://example.com/ameku/ep4-720p.mp4" },
-      { ep: 5, link: "https://example.com/ameku/ep5-720p.mp4" }
-    ]
+    episodes: Array.from({ length: 12 }, (_, i) => {
+      const epNum = String(i + 1).padStart(2, '0');
+      return {
+        ep: i + 1,
+        link: `https://cuty.io/AMDDDS01E${epNum}`
+      };
+    })
   };
 
   const episodeListDiv = document.getElementById("episodeList");
@@ -123,11 +122,7 @@
   }
 
   renderEpisodes();
-
-  // Optional: If you want clicking the anime to reload episodes (only one here)
-  document.querySelector("#animeList li").addEventListener("click", () => {
-    renderEpisodes();
-  });
+  document.querySelector("#animeList li").addEventListener("click", renderEpisodes);
 </script>
 </body>
 </html>

@@ -1,15 +1,25 @@
+/* Reset */
+* {
+  box-sizing: border-box;
+}
+
 body {
-  display: flex;
-  font-family: Arial, sans-serif;
   margin: 0;
-  padding: 0;
+  font-family: 'Orbitron', sans-serif;
+  background-color: #0a0a0a;
+  color: #00ffcc;
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
 }
 
 aside {
   width: 25%;
   padding: 1rem;
-  background-color: #f0f0f0;
-  box-sizing: border-box;
+  background: #101010;
+  border-right: 2px solid #00ffcc;
+  box-shadow: 0 0 20px #00ffcc;
+  overflow-y: auto;
 }
 
 section#episodes {
@@ -18,16 +28,37 @@ section#episodes {
   background-size: contain;
   background-repeat: repeat;
   background-position: top left;
-  box-sizing: border-box;
-  color: #fff;
-  text-shadow: 1px 1px 2px #000;
   min-height: 100vh;
+  color: #00ffcc;
+  text-shadow: 0 0 5px #00f2ff;
+  overflow-y: auto;
 }
 
-#genreFilter, #seasonFilter, #searchInput {
+h2 {
+  font-size: 1.3rem;
+  border-bottom: 2px solid #00ffcc;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 5px #00f2ff;
+}
+
+select, input[type="text"] {
   width: 100%;
   margin-bottom: 1rem;
-  padding: 0.5rem;
+  padding: 0.6rem;
+  background: #111;
+  color: #00ffcc;
+  border: 2px solid #00ffcc;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-shadow: 0 0 15px #00ffcc;
+  transition: 0.2s ease;
+}
+
+input[type="text"]:focus,
+select:focus {
+  outline: none;
+  box-shadow: 0 0 25px #00ffff, 0 0 10px #00ffcc inset;
 }
 
 #animeList {
@@ -40,13 +71,23 @@ section#episodes {
 #animeList li {
   padding: 0.5rem;
   cursor: pointer;
-  background-color: #ddd;
-  margin-bottom: 4px;
-  border-radius: 4px;
+  background: #1a1a1a;
+  border: 1px solid #00ffcc;
+  margin-bottom: 6px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px #00ffcc;
+}
+
+#animeList li:hover {
+  background: #00ffcc;
+  color: #000;
+  transform: scale(1.03);
 }
 
 #animeList li.active {
-  background-color: #bbb;
+  background: #00ffcc;
+  color: #000;
   font-weight: bold;
 }
 
@@ -58,7 +99,20 @@ section#episodes {
 }
 
 .episode {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 255, 204, 0.1);
   padding: 1rem;
-  border-radius: 5px;
+  border-radius: 6px;
+  border: 2px solid #00ffcc;
+  box-shadow: 0 0 15px #00ffcc;
+  flex: 1 1 200px;
+}
+
+.episode a {
+  color: #00ffcc;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.episode a:hover {
+  text-shadow: 0 0 8px #00ffff;
 }

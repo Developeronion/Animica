@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Animica Hindi - Ameku M.D. Doctor Detective</title>
+  <title>Animica Hindi</title>
   <style>
     body {
       margin: 0;
@@ -51,7 +51,6 @@
       flex-grow: 1;
       padding: 20px 30px;
       overflow-y: auto;
-      background-image: url('Ameku M.D. Doctor Detective.jpg');
       background-size: contain;
       background-position: center top;
       background-repeat: repeat-y;
@@ -104,6 +103,7 @@
       <h2>Anime List</h2>
       <ul id="animeList">
         <li class="active" data-id="1">Ameku M.D. Doctor Detective S01 720p</li>
+        <li data-id="2">Sword Art Online Season 1</li>
       </ul>
     </nav>
     <section id="episodes">
@@ -116,26 +116,37 @@
   <footer>© 2025 Animica Hindi</footer>
 
   <script>
-    const animeData = {
-      id: 1,
-      title: "Ameku M.D. Doctor Detective S01 720p",
-      backgroundImage: "Ameku M.D. Doctor Detective.jpg",
-      episodes: Array.from({ length: 12 }, (_, i) => {
-        const epNum = String(i + 1).padStart(2, '0');
-        return {
+    const animeList = [
+      {
+        id: 1,
+        title: "Ameku M.D. Doctor Detective S01 720p",
+        backgroundImage: "Ameku M.D. Doctor Detective.jpg",
+        episodes: Array.from({ length: 12 }, (_, i) => ({
           ep: i + 1,
-          link: `https://cuty.io/AMDDDS01E${epNum}`
-        };
-      })
-    };
+          link: `https://cuty.io/AMDDDS01E${String(i + 1).padStart(2, '0')}`
+        }))
+      },
+      {
+        id: 2,
+        title: "Sword Art Online Season 1",
+        backgroundImage: "Sword Art Online.jpg",
+        episodes: Array.from({ length: 12 }, (_, i) => ({
+          ep: i + 1,
+          link: `https://cuty.io/SWORDAOS1E${String(i + 1).padStart(2, '0')}`
+        }))
+      }
+    ];
 
     const episodeListDiv = document.getElementById("episodeList");
     const episodeSection = document.getElementById("episodes");
+    const animeListItems = document.querySelectorAll("#animeList li");
+    const episodeHeader = episodeSection.querySelector("h2");
 
-    function renderEpisodes() {
-      episodeSection.style.backgroundImage = `url('${animeData.backgroundImage}')`;
+    function renderEpisodes(anime) {
+      episodeSection.style.backgroundImage = `url('${anime.backgroundImage}')`;
+      episodeHeader.textContent = `${anime.title} Episodes`;
       episodeListDiv.innerHTML = "";
-      animeData.episodes.forEach(ep => {
+      anime.episodes.forEach(ep => {
         const epDiv = document.createElement("div");
         epDiv.classList.add("episode");
         epDiv.innerHTML = `<a href="${ep.link}" target="_blank" download>Episode ${ep.ep} Download</a>`;
@@ -143,8 +154,18 @@
       });
     }
 
-    renderEpisodes();
-    document.querySelector("#animeList li").addEventListener("click", renderEpisodes);
+    animeListItems.forEach(item => {
+      item.addEventListener("click", () => {
+        animeListItems.forEach(li => li.classList.remove("active"));
+        item.classList.add("active");
+
+        const selectedId = Number(item.dataset.id);
+        const selectedAnime = animeList.find(a => a.id === selectedId);
+        renderEpisodes(selectedAnime);
+      });
+    });
+
+    renderEpisodes(animeList[0]);
   </script>
 </body>
 </html>

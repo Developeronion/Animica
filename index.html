@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Anime Share - Ameku M.D. Doctor Detective</title>
+  <title>Animica Hindi - Ameku M.D. Doctor Detective</title>
   <style>
     body {
       margin: 0;
@@ -51,18 +51,27 @@
       flex-grow: 1;
       padding: 20px 30px;
       overflow-y: auto;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      backdrop-filter: blur(4px);
+      color: white;
+      text-shadow: 1px 1px 3px #000;
     }
     section#episodes h2 {
-      color: #f36f21;
+      color: #fff;
     }
     .episode-list {
       margin-top: 15px;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 15px;
+      border-radius: 12px;
     }
     .episode {
       margin-bottom: 12px;
     }
     .episode a {
-      color: #f36f21;
+      color: #ffcc99;
       text-decoration: none;
       font-weight: 600;
     }
@@ -79,57 +88,56 @@
   </style>
 </head>
 <body>
-<header>Anime Share</header>
-<main>
-  <nav>
-    <h2>Anime List</h2>
-    <ul id="animeList">
-      <li class="active" data-id="1">Ameku M.D. Doctor Detective S01 720p</li>
-    </ul>
-  </nav>
-  <section id="episodes">
-    <h2>Ameku M.D. Doctor Detective S01 720p Episodes</h2>
-    <div class="episode-list" id="episodeList">
-      <!-- Episodes inserted by JS -->
-    </div>
-  </section>
-</main>
-<footer>© 2025 Anime Share</footer>
+  <header>Animica Hindi</header>
+  <main>
+    <nav>
+      <h2>Anime List</h2>
+      <ul id="animeList">
+        <li class="active" data-id="1">Ameku M.D. Doctor Detective S01 720p</li>
+      </ul>
+    </nav>
+    <section id="episodes">
+      <h2>Ameku M.D. Doctor Detective S01 720p Episodes</h2>
+      <div class="episode-list" id="episodeList">
+        <!-- Episodes inserted by JS -->
+      </div>
+    </section>
+  </main>
+  <footer>© 2025 Animica Hindi</footer>
 
-<script>
-  const animeData = {
-    id: 1,
-    title: "Ameku M.D. Doctor Detective S01 720p",
-    backgroundImage: "Ameku M.D. Doctor Detective.jpg", // local image in same repo/folder
-    episodes: Array.from({ length: 12 }, (_, i) => {
-      const epNum = String(i + 1).padStart(2, '0');
-      return {
-        ep: i + 1,
-        link: `https://cuty.io/AMDDDS01E${epNum}`
-      };
-    })
-  };
+  <script>
+    const animeData = {
+      id: 1,
+      title: "Ameku M.D. Doctor Detective S01 720p",
+      backgroundImage: "Ameku M.D. Doctor Detective.jpg",
+      episodes: Array.from({ length: 12 }, (_, i) => {
+        const epNum = String(i + 1).padStart(2, '0');
+        return {
+          ep: i + 1,
+          link: `https://cuty.io/AMDDDS01E${epNum}`
+        };
+      })
+    };
 
-  const episodeListDiv = document.getElementById("episodeList");
-  const episodeSection = document.getElementById("episodes");
+    const episodeListDiv = document.getElementById("episodeList");
+    const episodeSection = document.getElementById("episodes");
 
-  function renderEpisodes() {
-    // Set background image from local repo file
-    episodeSection.style.backgroundImage = `url('${animeData.backgroundImage}')`;
+    function renderEpisodes() {
+      // Set background image from local repo file
+      episodeSection.style.backgroundImage = `url('${animeData.backgroundImage}')`;
 
-    // Render episode links
-    episodeListDiv.innerHTML = "";
-    animeData.episodes.forEach(ep => {
-      const epDiv = document.createElement("div");
-      epDiv.classList.add("episode");
-      epDiv.innerHTML = `<a href="${ep.link}" target="_blank" download>Episode ${ep.ep} Download</a>`;
-      episodeListDiv.appendChild(epDiv);
-    });
-  }
+      // Render episode links
+      episodeListDiv.innerHTML = "";
+      animeData.episodes.forEach(ep => {
+        const epDiv = document.createElement("div");
+        epDiv.classList.add("episode");
+        epDiv.innerHTML = `<a href="${ep.link}" target="_blank" download>Episode ${ep.ep} Download</a>`;
+        episodeListDiv.appendChild(epDiv);
+      });
+    }
 
-  renderEpisodes();
-  document.querySelector("#animeList li").addEventListener("click", renderEpisodes);
-</script>
-
+    renderEpisodes();
+    document.querySelector("#animeList li").addEventListener("click", renderEpisodes);
+  </script>
 </body>
 </html>

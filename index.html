@@ -24,45 +24,18 @@
       min-height: calc(100vh - 60px);
     }
     nav {
-      width: 270px;
+      width: 250px;
       background-color: #fff3e6;
       border-right: 1px solid #f36f21;
       overflow-y: auto;
-      padding: 10px 15px;
-      box-sizing: border-box;
     }
     nav h2 {
-      margin: 20px 0 10px;
+      margin: 20px;
       color: #f36f21;
-    }
-    nav label {
-      display: block;
-      font-weight: 600;
-      margin-top: 15px;
-      margin-bottom: 6px;
-      color: #f36f21;
-      font-size: 14px;
-    }
-    nav input[type="text"], nav select {
-      width: 100%;
-      padding: 6px 8px;
-      border: 1.5px solid #f36f21;
-      border-radius: 4px;
-      font-size: 14px;
-      box-sizing: border-box;
-      background: #fff3e6;
-      color: #333;
-      cursor: pointer;
-    }
-    nav select[multiple] {
-      height: 90px;
     }
     nav ul {
       list-style: none;
       padding-left: 0;
-      margin-top: 10px;
-      max-height: 300px;
-      overflow-y: auto;
     }
     nav li {
       padding: 12px 20px;
@@ -94,7 +67,6 @@
       background: rgba(0, 0, 0, 0.5);
       padding: 8px 16px;
       border-radius: 8px;
-      text-align: center;
     }
     .episode-list {
       margin-top: 10px;
@@ -115,38 +87,38 @@
     .episode a:hover {
       text-decoration: underline;
     }
+    footer {
+      text-align: center;
+      padding: 10px;
+      background: #f36f21;
+      color: white;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
   <header>Animica Hindi</header>
   <main>
     <nav>
-      <label for="searchInput">Search Anime</label>
-      <input type="text" id="searchInput" placeholder="Type to search..." />
-
-      <label for="genreSelect">Filter by Genre</label>
-      <select id="genreSelect" multiple></select>
-
       <h2>Anime List</h2>
       <ul id="animeList">
-        <!-- dynamically filled -->
+        <li class="active" data-id="1">Ameku M.D. Doctor Detective S01 720p</li>
+        <li data-id="2">Sword Art Online Season 1</li>
+        <li data-id="3">A Condition Called Love Season 1</li>
       </ul>
     </nav>
     <section id="episodes">
-      <h2>Select an anime to view episodes</h2>
-      <div class="episode-list" id="episodeList">
-        <!-- Episodes inserted by JS -->
-      </div>
+      <h2>Ameku M.D. Doctor Detective S01 720p Episodes</h2>
+      <div class="episode-list" id="episodeList"></div>
     </section>
   </main>
   <footer>© 2025 Animica Hindi</footer>
 
   <script>
-    const animeListData = [
+    const animeList = [
       {
         id: 1,
         title: "Ameku M.D. Doctor Detective S01 720p",
-        genres: ["Detective", "Drama"],
         backgroundImage: "Ameku M.D. Doctor Detective.jpg",
         episodes: Array.from({ length: 12 }, (_, i) => ({
           ep: i + 1,
@@ -156,7 +128,6 @@
       {
         id: 2,
         title: "Sword Art Online Season 1",
-        genres: ["Action", "Adventure", "Fantasy"],
         backgroundImage: "Sword Art Online.jpg",
         episodes: Array.from({ length: 12 }, (_, i) => ({
           ep: i + 1,
@@ -166,7 +137,6 @@
       {
         id: 3,
         title: "A Condition Called Love Season 1",
-        genres: ["Romance", "School"],
         backgroundImage: "A Condition Called Love Season 1.jpg",
         episodes: Array.from({ length: 12 }, (_, i) => ({
           ep: i + 1,
@@ -175,57 +145,10 @@
       }
     ];
 
-    const searchInput = document.getElementById("searchInput");
-    const genreSelect = document.getElementById("genreSelect");
-    const animeListEl = document.getElementById("animeList");
     const episodeListDiv = document.getElementById("episodeList");
     const episodeSection = document.getElementById("episodes");
+    const animeListItems = document.querySelectorAll("#animeList li");
     const episodeHeader = episodeSection.querySelector("h2");
-
-    let filteredAnime = [...animeListData];
-    let activeAnimeId = filteredAnime[0]?.id || null;
-
-    function getAllGenres() {
-      const genresSet = new Set();
-      animeListData.forEach(anime => {
-        anime.genres.forEach(g => genresSet.add(g));
-      });
-      return Array.from(genresSet).sort();
-    }
-
-    function populateGenres() {
-      const genres = getAllGenres();
-      genres.forEach(genre => {
-        const option = document.createElement("option");
-        option.value = genre;
-        option.textContent = genre;
-        genreSelect.appendChild(option);
-      });
-    }
-
-    function renderAnimeList() {
-      animeListEl.innerHTML = "";
-      if (filteredAnime.length === 0) {
-        const noRes = document.createElement("li");
-        noRes.textContent = "No anime found";
-        noRes.style.cursor = "default";
-        noRes.style.color = "#999";
-        animeListEl.appendChild(noRes);
-        return;
-      }
-      filteredAnime.forEach(anime => {
-        const li = document.createElement("li");
-        li.textContent = anime.title;
-        li.dataset.id = anime.id;
-        li.classList.toggle("active", anime.id === activeAnimeId);
-        li.addEventListener("click", () => {
-          activeAnimeId = anime.id;
-          renderEpisodes(anime);
-          renderAnimeList();
-        });
-        animeListEl.appendChild(li);
-      });
-    }
 
     function renderEpisodes(anime) {
       episodeSection.style.backgroundImage = `url('${encodeURI(anime.backgroundImage)}')`;
@@ -239,29 +162,18 @@
       });
     }
 
-    function filterAnime() {
-      const searchText = searchInput.value.trim().toLowerCase();
-      const selectedGenres = Array.from(genreSelect.selectedOptions).map(opt => opt.value);
+    animeListItems.forEach(item => {
+      item.addEventListener("click", () => {
+        animeListItems.forEach(li => li.classList.remove("active"));
+        item.classList.add("active");
 
-      filteredAnime = animeListData.filter(anime => {
-        const matchesSearch = anime.title.toLowerCase().includes(searchText);
-        const matchesGenre = selectedGenres.length === 0 || selectedGenres.every(g => anime.genres.includes(g));
-        return matchesSearch && matchesGenre;
+        const selectedId = Number(item.dataset.id);
+        const selectedAnime = animeList.find(a => a.id === selectedId);
+        renderEpisodes(selectedAnime);
       });
+    });
 
-      if (!filteredAnime.find(a => a.id === activeAnimeId)) {
-        activeAnimeId = filteredAnime[0]?.id || null;
-        if (activeAnimeId) {
-          const activeAnime = animeListData.find(a => a.id === activeAnimeId);
-          renderEpisodes(activeAnime);
-        } else {
-          episodeSection.style.backgroundImage = '';
-          episodeHeader.textContent = 'No anime selected';
-          episodeListDiv.innerHTML = '';
-        }
-      }
-
-      renderAnimeList();
-    }
-
-    populateGenres
+    renderEpisodes(animeList[0]);
+  </script>
+</body>
+</html>

@@ -1,23 +1,209 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>✨ Anime Nexus</title>
+  <title>✨ Anime Nexus - Neon 3D</title>
+
+  <!-- Minecraft font -->
   <link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* === Reset & base === */
+    body {
+      margin: 0;
+      background: #111;
+      font-family: 'Minecraft', monospace, sans-serif;
+      color: #ccc;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1000px;
+      margin: 40px auto;
+      text-align: center;
+      position: relative;
+    }
+
+    /* Neon header box */
+    .ip-box {
+      background: #222;
+      border: 3px solid #ff33cc;
+      color: #ff33cc;
+      font-weight: bold;
+      font-size: 1.4rem;
+      padding: 16px 30px;
+      margin-bottom: 40px;
+      border-radius: 14px;
+      box-shadow:
+        0 0 12px #ff33cc,
+        0 0 24px #ff66cc,
+        0 0 36px #ff33cc;
+      display: inline-block;
+      user-select: none;
+      cursor: default;
+    }
+
+    /* Sections */
+    .section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 100px;
+      opacity: 0;
+      transform: translateY(80px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+    .section.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .section:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+
+    /* Anime images with neon shadow & spin animation */
+    .image-spin {
+      width: 320px;
+      border-radius: 24px;
+      box-shadow:
+        0 0 20px #ff33cc,
+        0 0 40px #ff66cc,
+        0 0 60px #ff99dd;
+      animation: spin-in-place 8s linear infinite paused;
+      transform-origin: center center;
+      cursor: default;
+      transition: box-shadow 0.3s;
+    }
+    .section.show .image-spin {
+      animation-play-state: running;
+    }
+    .image-spin:hover {
+      box-shadow:
+        0 0 40px #ff99dd,
+        0 0 70px #ff33cc,
+        0 0 100px #ffccff;
+      transform: scale(1.05);
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+
+    /* Text area */
+    .text {
+      max-width: 480px;
+      text-align: left;
+      color: #bbb;
+      opacity: 0.4;
+      transition: opacity 1.8s ease;
+      user-select: none;
+    }
+    .text.show {
+      opacity: 1;
+      color: #ff99cc;
+      text-shadow:
+        0 0 12px #ff99cc,
+        0 0 30px #ff66cc,
+        0 0 45px #cc33aa;
+    }
+
+    /* Headings with neon glow */
+    h2 {
+      font-size: 2.6rem;
+      margin-bottom: 18px;
+      color: #ff99cc;
+      text-shadow:
+        0 0 15px #ff99cc,
+        0 0 30px #ff66cc,
+        0 0 50px #cc33aa;
+      user-select: none;
+      animation: glow-pulse 3.5s ease-in-out infinite;
+    }
+
+    /* Paragraph */
+    p {
+      font-size: 1.15rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    /* Neon gradient download button */
+    .download-btn {
+      display: inline-block;
+      padding: 14px 32px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: #111;
+      background: linear-gradient(45deg, #ff33cc, #ff66cc);
+      border-radius: 14px;
+      box-shadow:
+        0 0 15px #ff33cc,
+        0 0 30px #ff66cc,
+        0 0 45px #ff99dd;
+      text-decoration: none;
+      transition: background 0.4s, box-shadow 0.4s, transform 0.3s;
+      user-select: none;
+      cursor: pointer;
+    }
+    .download-btn:hover {
+      background: linear-gradient(45deg, #ff66cc, #ff33cc);
+      box-shadow:
+        0 0 30px #ff99dd,
+        0 0 45px #ff33cc,
+        0 0 65px #ffccff;
+      transform: scale(1.08);
+    }
+
+    /* Animations */
+
+    @keyframes spin-in-place {
+      0% { transform: rotate(0deg) translateX(0); }
+      40% { transform: rotate(360deg) translateX(80px); }
+      70% { transform: rotate(720deg) translateX(-80px); }
+      100% { transform: rotate(1080deg) translateX(0); }
+    }
+
+    @keyframes glow-pulse {
+      0%, 100% {
+        text-shadow:
+          0 0 15px #ff99cc,
+          0 0 30px #ff66cc,
+          0 0 50px #cc33aa;
+      }
+      50% {
+        text-shadow:
+          0 0 30px #ffccdd,
+          0 0 45px #ff99cc,
+          0 0 65px #ff66cc;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .section {
+        flex-direction: column !important;
+        gap: 30px;
+      }
+      .image-spin {
+        width: 85%;
+      }
+      .text {
+        text-align: center;
+        max-width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-
-    <!-- Neon Header -->
-    <div class="ip-box" title="Click to copy site name">
+    <!-- Neon header -->
+    <div class="ip-box" title="Welcome to Anime Nexus">
       <strong>🌸 Welcome to Anime Nexus</strong>
     </div>
 
-    <!-- Anime Card 1 -->
+    <!-- Anime Section 1 -->
     <div class="section">
-      <img src="anime1.png" alt="Anime Title 1" class="image-spin" />
+      <img src="https://i.imgur.com/0Q1G6z6.jpg" alt="Demon Blade" class="image-spin" />
       <div class="text">
         <h2>🌟 Demon Blade: Crimson Night</h2>
         <p>A fearless swordsman rises from the ashes to avenge his fallen clan. Watch the full season now.</p>
@@ -25,17 +211,30 @@
       </div>
     </div>
 
-    <!-- Anime Card 2 -->
+    <!-- Anime Section 2 -->
     <div class="section">
-      <img src="anime2.png" alt="Anime Title 2" class="image-spin" />
+      <img src="https://i.imgur.com/3D8F6uT.jpg" alt="Starfall Dreamers" class="image-spin" />
       <div class="text">
         <h2>🌌 Starfall Dreamers</h2>
         <p>In a galaxy torn by war, five friends uncover ancient powers. A cosmic journey begins.</p>
         <a href="#" class="download-btn">Download Episode</a>
       </div>
     </div>
-
   </div>
-  <script src="script.js"></script>
+
+  <script>
+    // Animate sections on scroll
+    const sections = document.querySelectorAll('.section');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+          entry.target.querySelector('.text')?.classList.add('show');
+        }
+      });
+    }, { threshold: 0.2 });
+
+    sections.forEach(section => observer.observe(section));
+  </script>
 </body>
 </html>

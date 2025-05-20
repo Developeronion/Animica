@@ -1,6 +1,5 @@
-// Animate sections on scroll
+// Reveal sections on scroll
 const sections = document.querySelectorAll('.section');
-const options = { threshold: 0.1 };
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -8,6 +7,6 @@ const observer = new IntersectionObserver((entries) => {
       entry.target.querySelector('.text')?.classList.add('show');
     }
   });
-}, options);
+}, { threshold: 0.1 });
 
 sections.forEach(section => observer.observe(section));

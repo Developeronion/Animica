@@ -185,7 +185,6 @@
     let filteredAnime = [...animeListData];
     let activeAnimeId = filteredAnime[0]?.id || null;
 
-    // Extract all unique genres from animeListData
     function getAllGenres() {
       const genresSet = new Set();
       animeListData.forEach(anime => {
@@ -194,7 +193,6 @@
       return Array.from(genresSet).sort();
     }
 
-    // Populate genre multi-select options
     function populateGenres() {
       const genres = getAllGenres();
       genres.forEach(genre => {
@@ -205,7 +203,6 @@
       });
     }
 
-    // Render anime list based on current filteredAnime and activeAnimeId
     function renderAnimeList() {
       animeListEl.innerHTML = "";
       if (filteredAnime.length === 0) {
@@ -230,9 +227,8 @@
       });
     }
 
-    // Render episodes and background for selected anime
     function renderEpisodes(anime) {
-      episodeSection.style.backgroundImage = `url('${anime.backgroundImage}')`;
+      episodeSection.style.backgroundImage = `url('${encodeURI(anime.backgroundImage)}')`;
       episodeHeader.textContent = `${anime.title} Episodes`;
       episodeListDiv.innerHTML = "";
       anime.episodes.forEach(ep => {
@@ -243,7 +239,6 @@
       });
     }
 
-    // Filter anime based on search text and selected genres
     function filterAnime() {
       const searchText = searchInput.value.trim().toLowerCase();
       const selectedGenres = Array.from(genreSelect.selectedOptions).map(opt => opt.value);
@@ -254,7 +249,6 @@
         return matchesSearch && matchesGenre;
       });
 
-      // If active anime not in filtered list, reset to first
       if (!filteredAnime.find(a => a.id === activeAnimeId)) {
         activeAnimeId = filteredAnime[0]?.id || null;
         if (activeAnimeId) {
@@ -270,14 +264,4 @@
       renderAnimeList();
     }
 
-    // Init
-    populateGenres();
-    renderEpisodes(animeListData[0]);
-    renderAnimeList();
-
-    // Event Listeners
-    searchInput.addEventListener("input", filterAnime);
-    genreSelect.addEventListener("change", filterAnime);
-  </script>
-</body>
-</html>
+    populateGenres
